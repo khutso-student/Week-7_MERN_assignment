@@ -11,9 +11,22 @@ const app = express();
 
 // ✅ 1. CORS goes at the top
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://week-7-mern-assignment-vius.vercel.app'],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'https://week-7-mern-assignment-vius.vercel.app'
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 
 // ✅ 2. JSON middleware
 app.use(express.json());
