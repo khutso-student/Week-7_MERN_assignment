@@ -12,9 +12,8 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',
   'https://week-7-mern-assignment-vius.vercel.app',
-  'https://week-7-mern-assignment-ah69.vercel.app' 
+  'https://week-7-mern-assignment-ah69.vercel.app'
 ];
-
 
 app.use(cors({
   origin: function(origin, callback) {
@@ -42,11 +41,12 @@ app.use((err, req, res, next) => {
 });
 
 if (process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 5000;
   mongoose.connect(process.env.MONGO_URI)
     .then(() => {
       console.log('MongoDB connected');
-      app.listen(5000, () => {
-        console.log('Server running on http://localhost:5000');
+      app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server running on port ${PORT}`);
       });
     })
     .catch((err) => {
