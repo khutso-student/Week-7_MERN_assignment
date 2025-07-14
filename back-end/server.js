@@ -10,9 +10,10 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // <-- allow your frontend origin
-  credentials: true,               // if you use cookies/auth headers
+  origin: ['http://localhost:5173', 'https://week-7-mern-assignment-vius.vercel.app'],
+  credentials: true,
 }));
+
 
 app.use(express.json());
 
