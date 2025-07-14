@@ -11,13 +11,13 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://week-7-mern-assignment-vius.vercel.app'
+  'https://week-7-mern-assignment-vius.vercel.app'  // <-- confirm this is your deployed frontend URL
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true); // allow
+      callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
@@ -25,7 +25,7 @@ app.use(cors({
   credentials: true,
 }));
 
-// Handle preflight OPTIONS requests
+// Handle preflight OPTIONS requests (once)
 app.options('*', cors());
 
 app.use(express.json());
