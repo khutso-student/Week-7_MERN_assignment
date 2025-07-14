@@ -1,6 +1,6 @@
 import React from 'react';
+import { signup } from '../services/AuthAPI';
 import { useState, useContext } from "react";
-import { signup } from '../services/authAPI';
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from '../context/AuthContext';
 import { PiUserLight } from "react-icons/pi";
