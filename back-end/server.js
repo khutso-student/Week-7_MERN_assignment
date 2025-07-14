@@ -13,9 +13,9 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://week-7-mern-assignment-vius.vercel.app',
   'https://week-7-mern-assignment-ah69.vercel.app',
-  'https://week-7-devops-deployment-assignment-xue3.onrender.com',
-  'https://week-7-mern-assignment.vercel.app'  
+  'https://week-7-devops-deployment-assignment-xue3.onrender.com',  // important!
 ];
+
 
 
 // Allow all origins temporarily (debug only)
