@@ -9,14 +9,13 @@ dotenv.config();
 
 const app = express();
 
-// ✅ 1. CORS goes at the top
-// ✅ Main CORS middleware (handles normal requests)
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://week-7-mern-assignment-vius.vercel.app'
+];
+
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'https://week-7-mern-assignment-vius.vercel.app'
-    ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -24,60 +23,30 @@ app.use(cors({
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
-
-// ✅ Handle preflight OPTIONS requests too
-app.options('*', cors({
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'https://week-7-mern-assignment-vius.vercel.app'
-    ];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 
-
-
-// ✅ 2. JSON middleware
 app.use(express.json());
 
-// ✅ 3. Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
-// ✅ 4. Error handler
+// Error handler
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({ message: err.message || 'Server error' });
 });
 
-// ✅ 5. Start the server
 if (process.env.NODE_ENV !== 'test') {
-  mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log('MongoDB connected');
-    app.listen(5000, () => {
-      console.log('Server running on http://localhost:5000');
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+      console.log('MongoDB connected');
+      app.listen(5000, () => {
+        console.log('Server running on http://localhost:5000');
+      });
+    })
+    .catch((err) => {
+      console.error('MongoDB connection error:', err);
+      process.exit(1);
     });
-  })
-  .catch((err) => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
 }
-
-module.exports = app;
