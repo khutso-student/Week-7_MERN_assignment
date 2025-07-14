@@ -11,8 +11,10 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://week-7-mern-assignment-vius.vercel.app'  // <-- confirm this is your deployed frontend URL
+  'https://week-7-mern-assignment-vius.vercel.app',
+  'https://week-7-mern-assignment-ah69.vercel.app' 
 ];
+
 
 app.use(cors({
   origin: function(origin, callback) {
