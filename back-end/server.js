@@ -15,9 +15,9 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
+  origin: function(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
+      callback(null, true); // allow
     } else {
       callback(new Error('Not allowed by CORS'));
     }
@@ -25,6 +25,8 @@ app.use(cors({
   credentials: true,
 }));
 
+// Handle preflight OPTIONS requests
+app.options('*', cors());
 
 app.use(express.json());
 
@@ -50,3 +52,5 @@ if (process.env.NODE_ENV !== 'test') {
       process.exit(1);
     });
 }
+
+module.exports = app;
