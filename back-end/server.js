@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -13,17 +14,12 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://week-7-mern-assignment-vius.vercel.app',
   'https://week-7-mern-assignment-ah69.vercel.app',
-  'https://week-7-devops-deployment-assignment-xue3.onrender.com',  // important!
+  'https://week-7-devops-deployment-assignment-xue3.onrender.com',
+  'https://week-7-mern-assignment.vercel.app',
 ];
 
-
-
-// Allow all origins temporarily (debug only)
-// app.use(cors({ origin: '*', credentials: true }));
-// app.options('*', cors());
-
 app.use(cors({
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -49,17 +45,19 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message || 'Server error' });
 });
 
-const PORT = process.env.PORT || 5000;
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('MongoDB connected');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 5000;
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+      console.log('MongoDB connected');
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    })
+    .catch(err => {
+      console.error('MongoDB connection error:', err);
+      process.exit(1);
     });
-  })
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+}
 
 module.exports = app;
